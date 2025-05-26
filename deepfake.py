@@ -110,9 +110,24 @@ def build_and_train_models(train_gen, val_gen, test_gen):
     for layer in inception.layers[-5:]:
         layer.trainable = True
 
+    # Compile and train ensemble
     ensemble_model.compile(optimizer=Adam(1e-4), loss='binary_crossentropy', metrics=['accuracy'])
-    ensemble_model.fit(train_gen, validation_data=val_gen, epochs=5)
+
+    # Train
+    history = ensemble_model.fit(train_gen, epochs=10, validation_data=val_gen, verbose=1)
+
+    # Save the ensemble model to local path
     ensemble_model.save("ensemble_model.h5")
+
+    # Optional: Save to Google Drive if running in Colab
+    drive_path = '/content/drive/MyDrive/deepfake_ensemble_model.h5'
+    if os.path.exists('/content/drive/MyDrive'):
+        ensemble_model.save(drive_path)
+        print(f"Ensemble model saved to: {drive_path}")
+
+    # Evaluate and print test accuracy
+    test_loss, test_acc = ensemble_model.evaluate(test_gen)
+    print(f'Test Accuracy: {test_acc * 100:.2f}%')
 
 
 # Run steps
