@@ -1,16 +1,26 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import os
 from werkzeug.utils import secure_filename
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
+import gdown
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads'
+MODEL_PATH = 'deepfake_ensemble_model.h5'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Load the model once
-model = load_model('deepfake_ensemble_model.h5')
+# Download model from Google Drive if not present
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        print("Downloading model from Google Drive...")
+        url = "https://drive.google.com/uc?id=1CCuGDjPm5Av_6W23xKMcalfSIn2H65pK"
+        gdown.download(url, MODEL_PATH, quiet=False)
+
+# Load the model
+download_model()
+model = load_model(MODEL_PATH)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -22,7 +32,6 @@ def index():
             return 'No file part in request'
 
         file = request.files['file']
-
         if file.filename == '':
             return 'No selected file'
 
