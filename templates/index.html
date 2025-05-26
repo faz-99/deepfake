@@ -1,23 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Deepfake Detector</title>
-    <style>
-        body { font-family: Arial; text-align: center; padding: 20px; }
-        img { max-width: 300px; margin-top: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Deepfake Image Detector</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f2f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 50px;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    form {
+      background-color: white;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    input[type="file"] {
+      margin-bottom: 20px;
+    }
+
+    input[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .result h2 {
+      font-size: 24px;
+      color: #333;
+    }
+
+    .result img {
+      max-width: 300px;
+      margin-top: 15px;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
 <body>
-    <h1>Deepfake Image Detector</h1>
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*" required>
-        <br><br>
-        <input type="submit" value="Detect">
-    </form>
 
-    {% if prediction %}
-        <h2>Prediction: {{ prediction }}</h2>
-        <img src="{{ image_path }}" alt="Uploaded Image">
-    {% endif %}
+  <h1>Deepfake Image Detector</h1>
+
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" accept="image/*" required><br>
+    <input type="submit" value="Detect">
+  </form>
+
+  {% if prediction %}
+  <div class="result">
+    <h2>Prediction: {{ prediction }}</h2>
+    <img src="{{ image_path }}" alt="Uploaded Image">
+  </div>
+  {% endif %}
+
 </body>
 </html>
