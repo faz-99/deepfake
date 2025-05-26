@@ -117,7 +117,7 @@ def build_and_train_models(train_gen, val_gen, test_gen):
     history = ensemble_model.fit(train_gen, epochs=10, validation_data=val_gen, verbose=1)
 
     # Save the ensemble model to local path
-    ensemble_model.save("ensemble_model.h5")
+    ensemble_model.save("deepfake_ensemble_model")
 
     # Optional: Save to Google Drive if running in Colab
     drive_path = '/content/drive/MyDrive/deepfake_ensemble_model.h5'
